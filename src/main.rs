@@ -1,4 +1,4 @@
-use tree_sitter::{Parser, Tree};
+use tree_sitter::Parser;
 fn main() {
     let code = r#"
   echo "Hello, world!"
@@ -8,5 +8,5 @@ fn main() {
     parser
         .set_language(tree_sitter_bash::language())
         .expect("Error loading Bash grammar");
-    let parsed = parser.parse(code, None);
+    //let parsed = parser.parse(code, None);
 }
