@@ -1,0 +1,1 @@
+This CLI extracts all commands in a given bash script
