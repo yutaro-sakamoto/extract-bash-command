@@ -8,5 +8,6 @@ fn main() {
     parser
         .set_language(tree_sitter_bash::language())
         .expect("Error loading Bash grammar");
-    //let parsed = parser.parse(code, None);
+    let parsed = parser.parse(code, None);
+    println!("{:?}", parsed);
 }
