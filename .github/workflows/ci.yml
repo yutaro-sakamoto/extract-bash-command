@@ -37,3 +37,7 @@ jobs:
     - name: Builds
       run: |
         cargo build
+
+    - name: Tests
+      run: |
+        ./test.sh
