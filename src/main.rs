@@ -10,7 +10,13 @@ The output format is {command} {line} {column}.
     }
     .parse_or_exit();
 
-    let code = std::fs::read_to_string(args.file).expect("Error reading file");
+    let code = match std::fs::read_to_string(args.file) {
+        Ok(code) => code,
+        Err(e) => {
+            eprintln!("Error reading file: {}", e);
+            std::process::exit(1);
+        }
+    };
 
     let mut parser = Parser::new();
     let bash_language = tree_sitter_bash::language();
