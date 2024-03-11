@@ -71,7 +71,7 @@ The output format is {command} {line} {column}.
         "command_name",
         &bash_language,
         &parsed.root_node(),
-        &code_bytes,
+        code_bytes,
     );
     if args.var_cmd {
         command_ranges.append(&mut run_query(
@@ -84,7 +84,7 @@ The output format is {command} {line} {column}.
             "variable",
             &bash_language,
             &parsed.root_node(),
-            &code_bytes,
+            code_bytes,
         ));
     }
 
