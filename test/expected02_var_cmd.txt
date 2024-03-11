@@ -1,0 +1,7 @@
+$ECHO 4 1
+echo 6 1
+$ECHO 6 9
+echo 8 20
+cat 10 5
+echo 10 11
+$SED 10 24
