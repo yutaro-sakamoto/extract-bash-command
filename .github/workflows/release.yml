@@ -1,0 +1,37 @@
+name: Build executables
+on:
+  push:
+  pull_request:
+    types: [opened, reopened, review_requested, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust
+      run: rustup update stable
+
+    - uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+    - name: Install cross    
+      run: cargo install cross
+
+    - name: Build for Linux
+      run: |
+        cross build --target x86_64-unknown-linux-musl --release
+        tree target
+    
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: extract-bash-command
+        path: target/x86_64-unknown-linux-musl/release/extract-bash-command
