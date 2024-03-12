@@ -25,13 +25,23 @@ jobs:
     - name: Install cross    
       run: cargo install cross
 
-    - name: Build for Linux
+
+    - name: Build an executable for x86_64-unknown-linux-musl
       run: |
         cross build --target x86_64-unknown-linux-musl --release
-        tree target
-    
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
+ 
+    - name: Build an executable for x86_64-pc-windows-gnu
+      run: |
+        cross build --target x86_64-pc-windows-gnu --release   
+
+    - name: Archive artifacts (x86_64-unknown-linux-musl)
+      uses: actions/upload-artifact@v4
       with:
-        name: extract-bash-command
+        name: extract-bash-command-x86_64-unknown-linux-musl
         path: target/x86_64-unknown-linux-musl/release/extract-bash-command
+
+    - name: Archive artifacts (x86_64-pc-windows-gnu)
+      uses: actions/upload-artifact@v4
+      with:
+        name: extract-bash-command-x86_64-pc-windows-gnu
+        path: target/x86_64-pc-windows-gnu/release/extract-bash-command
