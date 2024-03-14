@@ -15,7 +15,7 @@ To see the help message, run `extract-bash-command -h` or `extract-bash-command 
 * Run `cargo build --release` to build this repository.
 * You can have the executable file in `target/release/extract-bash-command`. Copy it to a directory that `$PATH` specifies. (e.g. /usr/bin/)
 
-## Using pre-built binary 
+## Using pre-built binary for Linux
 
 Visit the release page and download the binary for your environment.
 
