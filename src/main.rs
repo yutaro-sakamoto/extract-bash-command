@@ -35,9 +35,15 @@ fn main() {
 The output format is {command} {line} {column}.
 "#;
         opt var_cmd:bool=false, desc:"Extract variables storing command names";
+        opt version:bool=false, desc:"Show version";
         param file:Vec<String>, desc:"The file to extract commands from.";
     }
     .parse_or_exit();
+
+    if args.version {
+        println!("{}", env!("CARGO_PKG_VERSION"));
+        std::process::exit(0);
+    }
 
     let mut parser = Parser::new();
     let bash_language = tree_sitter_bash::language();
