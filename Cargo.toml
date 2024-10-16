@@ -7,5 +7,5 @@ edition = "2021"
 
 [dependencies]
 tree-sitter = "0.20.10"
-tree-sitter-bash = "0.20.5"
+tree-sitter-bash = "0.23.1"
 rustop = "1.1.4"
