@@ -1,3 +1,5 @@
+use streaming_iterator::StreamingIterator;
+
 use rustop::opts;
 use tree_sitter::{Language, Node, Parser, Range};
 
@@ -8,14 +10,14 @@ fn run_query(
     node: &Node,
     code: &[u8],
 ) -> Vec<(std::ops::Range<usize>, Range)> {
-    let query = tree_sitter::Query::new(*lang, query_str).unwrap();
+    let query = tree_sitter::Query::new(lang, query_str).unwrap();
 
     let mut query_cursor = tree_sitter::QueryCursor::new();
-    let all_matches = query_cursor.matches(&query, *node, code);
+    let mut all_matches = query_cursor.matches(&query, *node, code);
 
     let command_name_index = query.capture_index_for_name(match_name).unwrap();
     let mut commands = Vec::new();
-    for each_match in all_matches {
+    while let Some(each_match) = all_matches.next() {
         for capture in each_match
             .captures
             .iter()
@@ -46,9 +48,9 @@ The output format is {command} {line} {column}.
     }
 
     let mut parser = Parser::new();
-    let bash_language = tree_sitter_bash::language();
+    let bash_language = tree_sitter_bash::LANGUAGE;
     parser
-        .set_language(bash_language)
+        .set_language(&bash_language.into())
         .expect("Error loading Bash grammar");
 
     for file in &args.file {
@@ -77,7 +79,7 @@ The output format is {command} {line} {column}.
                 (word) @command_name))
         "#,
             "command_name",
-            &bash_language,
+            &bash_language.into(),
             &parsed.root_node(),
             code_bytes,
         );
@@ -90,7 +92,7 @@ The output format is {command} {line} {column}.
                 (variable_name)) @variable))
                 "#,
                 "variable",
-                &bash_language,
+                &bash_language.into(),
                 &parsed.root_node(),
                 code_bytes,
             ));
