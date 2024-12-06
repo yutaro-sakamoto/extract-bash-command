@@ -1,0 +1,44 @@
+name: pull request
+
+on:
+  pull_request:
+    types: [opened, reopened, review_requested, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  # 最初にworkflowファイル全体をチェックする
+  check-workflows:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/check-workflows.yml
+
+  # workflowファイル全体のチェックが終わったら、テストを実行する
+  test:
+    needs: check-workflows
+    permissions:
+      contents: read
+    secrets: inherit
+    uses: ./.github/workflows/ci.yml
+
+
+  # dependabotが作成したPull Requestを自動マージする
+  auto-merge-dependabot-pr:
+    needs:
+      - test
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: gh pr merge "${GITHUB_HEAD_REF}" --squash --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
