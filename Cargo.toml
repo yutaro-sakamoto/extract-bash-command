@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tree-sitter = "0.25.5"
+tree-sitter = "0.25.8"
 tree-sitter-bash = "0.23.3"
 rustop = "1.1.4"
 streaming-iterator = "0.1.9"
